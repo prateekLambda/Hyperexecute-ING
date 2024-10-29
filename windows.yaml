@@ -1,0 +1,41 @@
+version: 0.1
+runson: win
+
+runtime:
+  - language: java
+    version: "11"
+
+  - language: ingenious
+    version: "1.0"
+
+autosplit: true
+concurrency: 1
+
+backgroundDirectives:
+  shell: bash
+  commands:
+    - name: YOUR_SERVICE_NAME
+      command: Xvfb :99 -screen 0 1920x1080x24
+env:
+  DISPLAY: ':99'
+captureScreenRecordingForScenarios: true
+
+pre:
+  # - cd "ING-Public-Web/TestPlan/Contact Us"
+  - pwd
+  - ls -la 
+  
+# testRunnerExecutor: bat
+
+testDiscovery:
+  type: raw
+  mode: dynamic
+  shell: bash
+  command: node discovery.js "ING-Public-Web/TestPlan/Contact Us" Execute
+
+testRunnerCommand: Run.bat -run -project_location "Projects/ING-Public-Web" -scenario "Contact Us" -testcase "$test" -browser "Chromium" -setEnv "capability.chromium.setheadless=false"
+
+retryOnFailure: true
+maxRetries: 1
+
+jobLabel: [selenium-testng, win, v1, autosplit]
